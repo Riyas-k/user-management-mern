@@ -13,9 +13,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "../../axios";
 import { Alert } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { loginFailure } from "../../redux/loginSlice";
 
 export default function Login() {
-    const [state,setState] = React.useState(false)
+   const dispatch = useDispatch();
+  //  const isLoggedIn = useSelector((state)=>state.login.isLoggedIn);
+   const error = useSelector((state)=>state.login.error);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -33,9 +37,10 @@ export default function Login() {
       await axios.post("/login", values).then((response) => {
         if (response.data.status) {
             localStorage.setItem('token',response.data.user)
+            // dispatch(loginSuccess())
           navigate("/");
         } else {
-          setState(true)
+          dispatch(loginFailure())
         }
       });
     },
@@ -54,9 +59,11 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-       {state &&  <Alert variant="filled" severity="error">
+      {error && (
+          <Alert variant="filled" severity="error">
             Error Invalid Credentials!
-          </Alert>}
+          </Alert>
+        )}
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>

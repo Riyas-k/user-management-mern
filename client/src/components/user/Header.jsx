@@ -25,7 +25,7 @@ function Header(props) {
         if (result.isConfirmed) {
           // Perform delete operation
           localStorage.removeItem("token");
-          navigate("/");
+          navigate("/login");
         }
       });
  
