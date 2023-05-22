@@ -1,0 +1,100 @@
+import { configureStore } from '@reduxjs/toolkit';
+import loginReducer from './loginSlice';
+
+const store = configureStore({
+  reducer: {
+    login: loginReducer,
+  },
+});
+
+export default store;
+
+
+
+
+
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+  isLoggedIn: false,
+  error: false,
+};
+
+const loginSlice = createSlice({
+  name: 'login',
+  initialState,
+  reducers: {
+    loginSuccess: (state) => {
+      state.isLoggedIn = true;
+      state.error = false;
+    },
+    loginFailure: (state) => {
+      state.isLoggedIn = false;
+      state.error = true;
+    },
+  },
+});
+
+export const { loginSuccess, loginFailure } = loginSlice.actions;
+export default loginSlice.reducer;
+
+
+
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import { loginSuccess, loginFailure } from './loginSlice';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const error = useSelector((state) => state.login.error);
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('/login', values);
+        if (response.data.status) {
+          localStorage.setItem('token', response.data.user);
+          dispatch(loginSuccess());
+          navigate('/');
+        } else {
+          dispatch(loginFailure());
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  return (
+    <div>
+      <form onSubmit={formik.handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+        />
+        {error && <p>Login failed. Please try again.</p>}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default Login;
