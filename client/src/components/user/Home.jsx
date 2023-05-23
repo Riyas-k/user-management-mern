@@ -18,7 +18,7 @@ import { Alert } from "@mui/material";
 function Home() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -36,13 +36,20 @@ function Home() {
 
   const cards = [1, 2, 3];
   const defaultTheme = createTheme();
-
+  const imageUrls = [
+    "https://source.unsplash.com/random?wallpapers",
+    "https://source.unsplash.com/random?sports",
+    "https://source.unsplash.com/random?animals",
+  ];
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-    <Header data={data}/>
-    <Alert severity="success">Welcome User —!</Alert>
+      <Header data={data} />
+      {
+        data && <Alert severity="success">Welcome User —!</Alert>
+      }
+     
       <main>
         {/* Hero unit */}
         <Box
@@ -69,15 +76,15 @@ function Home() {
               spacing={2}
               justifyContent="center"
             >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
+              {/* <Button variant="contained">Main call to action</Button>
+              <Button variant="outlined">Secondary action</Button> */}
             </Stack>
           </Container>
         </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 0 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
+            {cards.map((card, index) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card
                   sx={{
@@ -92,7 +99,7 @@ function Home() {
                       // 16:9
                       pt: "56.25%",
                     }}
-                    image="https://source.unsplash.com/random?wallpapers"
+                    image={imageUrls[index % imageUrls.length]}
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -103,10 +110,6 @@ function Home() {
                       the content.
                     </Typography>
                   </CardContent>
-                  {/* <CardActions>
-                        <Button size="small">View</Button>
-                        <Button size="small">Edit</Button>
-                      </CardActions> */}
                 </Card>
               </Grid>
             ))}

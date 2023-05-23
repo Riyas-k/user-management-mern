@@ -9,6 +9,6 @@ router.post("/login", userController.postLogin);
 
 router.get("/", auth.user, userController.getUser);
 
-router.post('/image',userController.postImage)
+router.post("/image", userController.postImage);
 
 module.exports = router;

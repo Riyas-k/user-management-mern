@@ -5,7 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import {Link,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -15,7 +15,7 @@ import axios from "../../axios";
 import { Alert } from "@mui/material";
 
 export default function Register() {
-  const [state, setstate] = useState(false)
+  const [state, setstate] = useState(false);
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -23,25 +23,26 @@ export default function Register() {
     email: "",
     password: "",
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     phone: Yup.string().required("Phone No is required"),
-    email: Yup.string().email("Invalid email address").required("Email is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
   const onSubmit = async (values) => {
-
-    await axios.post('/sign-up',values).then((response)=>{
-      if(response.data.status){
-        navigate('/login')
-      }else{
-      setstate(true)
+    await axios.post("/sign-up", values).then((response) => {
+      if (response.data.status) {
+        navigate("/login");
+      } else {
+        setstate(true);
       }
-    })
+    });
   };
 
   const formik = useFormik({
@@ -52,7 +53,6 @@ export default function Register() {
 
   return (
     <Container component="main" maxWidth="xs">
-   
       <CssBaseline />
       <Box
         sx={{
@@ -62,16 +62,23 @@ export default function Register() {
           alignItems: "center",
         }}
       >
-       {state &&  <Alert variant="filled" severity="error">
+        {state && (
+          <Alert variant="filled" severity="error">
             Error Email Already Exist!
-          </Alert>}
+          </Alert>
+        )}
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={formik.handleSubmit}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

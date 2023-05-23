@@ -7,53 +7,55 @@ import Header from "./Header";
 function Profile() {
   const [image, setImage] = useState([]);
   const [data, setData] = useState({});
-  
-  useEffect(()=>{
-    const fetchUser = async()=>{
-        const user = localStorage.getItem('token')
-        const details = jwt(user)
-        const headers = {
-            "x-access-token": user,
-            "Content-Type": "application/json",
-          };
-        await axios.get('/',{
-            headers,data:details
-        }).then((res)=>{
-            setImage(res.data.data.photo)
-            setData(res.data.data)
-            console.log(res);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = localStorage.getItem("token");
+      const details = jwt(user);
+      const headers = {
+        "x-access-token": user,
+        "Content-Type": "application/json",
+      };
+      await axios
+        .get("/", {
+          headers,
+          data: details,
         })
-    }
-    fetchUser()
-  },[])
-    
-  
+        .then((res) => {
+          setImage(res.data.data.photo);
+          setData(res.data.data);
+          console.log(res);
+        });
+    };
+    fetchUser();
+  }, []);
+
   const handleImage = async () => {
-    const formData = new FormData()
-    formData.append('file',image)
-    formData.append("upload_preset","cjcj4mix")
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "cjcj4mix");
     console.log(formData);
-    await axios.post("https://api.cloudinary.com/v1_1/dki1memle/image/upload",formData).then(async(res)=>{
+    await axios
+      .post("https://api.cloudinary.com/v1_1/dki1memle/image/upload", formData)
+      .then(async (res) => {
         console.log(res);
         let user = localStorage.getItem("token");
         let userData = await jwt(user);
-      localStorage.setItem('image',res.data.url)
-      let url = localStorage.getItem('image')
-      console.log(url,'url');
-        setImage(res.data.url)
+        localStorage.setItem("image", res.data.url);
+        let url = localStorage.getItem("image");
+        console.log(url, "url");
+        setImage(res.data.url);
         const newData = {
-            email:userData.email,
-            imgUrl:url
-        }
-        await axios.post('/image',newData)
-    })
-
-  }
+          email: userData.email,
+          imgUrl: url,
+        };
+        await axios.post("/image", newData);
+      });
+  };
   return (
     <>
-    <Header data={data}/>
-    <section  style={{ backgroundColor: "#ffffff" }}>
-   
+      <Header data={data} />
+      <section style={{ backgroundColor: "#ffffff" }}>
         <div
           className="row d-flex justify-content-center align-items-center"
           style={{ marginTop: "100px" }}
@@ -95,30 +97,28 @@ function Profile() {
                         </p>
                       </div>
                     </div>
-                
-                      <input
-                        className="d-flex pt-1 pb-2"
-                        onChange={(e) => setImage(e.target.files[0])}
-                        type="file"
-                      />
-                      <Button
-                        className="d-flex"
-                        onClick={handleImage}
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                      >
-                        Change Image
-                      </Button>
-          
+
+                    <input
+                      className="d-flex pt-1 pb-2"
+                      onChange={(e) => setImage(e.target.files[0])}
+                      type="file"
+                    />
+                    <Button
+                      className="d-flex"
+                      onClick={handleImage}
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                    >
+                      Change Image
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-    
-    </section>
+      </section>
     </>
   );
 }

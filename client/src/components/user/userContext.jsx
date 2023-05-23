@@ -4,7 +4,6 @@
 
 // const userContext = createContext();
 
-
 // export  function Auth (){
 //     const [data,setData] = useState({})
 //     const datas = localStorage.getItem('token')
@@ -18,6 +17,5 @@
 //     console.log(data,'====');
 //     return {data}
 // }
-
 
 // export default userContext

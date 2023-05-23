@@ -15,11 +15,19 @@ import axios from "../../axios";
 import { Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { loginFailure } from "../../redux/loginSlice";
+import { useEffect } from "react";
 
 export default function Login() {
-   const dispatch = useDispatch();
+  useEffect(() => {
+    const auth = localStorage.getItem("token");
+    if (auth) {
+      navigate("/");
+    }
+  }, []);
+
+  const dispatch = useDispatch();
   //  const isLoggedIn = useSelector((state)=>state.login.isLoggedIn);
-   const error = useSelector((state)=>state.login.error);
+  const error = useSelector((state) => state.login.error);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -36,11 +44,11 @@ export default function Login() {
       // Handle form submission
       await axios.post("/login", values).then((response) => {
         if (response.data.status) {
-            localStorage.setItem('token',response.data.user)
-            // dispatch(loginSuccess())
+          localStorage.setItem("token", response.data.user);
+          // dispatch(loginSuccess())
           navigate("/");
         } else {
-          dispatch(loginFailure())
+          dispatch(loginFailure());
         }
       });
     },
@@ -48,9 +56,8 @@ export default function Login() {
 
   return (
     <Container component="main" maxWidth="xs">
-   
       <CssBaseline />
-     
+
       <Box
         sx={{
           marginTop: 8,
@@ -59,7 +66,7 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-      {error && (
+        {error && (
           <Alert variant="filled" severity="error">
             Error Invalid Credentials!
           </Alert>
