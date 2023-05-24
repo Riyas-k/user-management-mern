@@ -76,6 +76,9 @@ function AdminHome() {
     );
     return result;
   };
+  const handleAdd = () => {
+    navigate('/admin/add-user');
+  };
 
   return (
     <>
@@ -121,6 +124,13 @@ function AdminHome() {
           Search
         </Button>
         <h2>Users List</h2>
+        <button
+          className="btn bg-success mt-2 mb-2"
+          onClick={handleAdd}
+          
+        >
+          Add
+        </button>
         <table className="table">
           <thead className="thead-dark">
             <tr>

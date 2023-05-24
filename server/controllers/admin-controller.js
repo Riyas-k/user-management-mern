@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models/connection");
+const bcrypt = require('bcrypt')
 
 const credentials = {
   email: "mohammedriyazriyaz04@gmail.com",
@@ -44,4 +45,23 @@ module.exports = {
       }
     });
   },
+  addUser:async(req,res)=>{
+    let {email,firstName,lastName,phone,password} = req.body
+    let user = await db.user.findOne({email:email})
+    if(user){
+      res.json({status:false})
+    }else{
+     let hashPassword =  await bcrypt.hash(password,10)
+      const newUser = await db.user({
+        fname: firstName,
+        lname: lastName,
+        email: email,
+        password: hashPassword,
+        phone: phone,
+      })
+      await newUser.save().then((response)=>{
+        res.json({status:true})
+      })
+    }
+  }
 };

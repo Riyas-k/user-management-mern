@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import jwt from "jwt-decode";
 import axios from "../../axios";
 import Header from "./Header";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const [image, setImage] = useState([]);
@@ -66,12 +67,13 @@ function Profile() {
                 <div className="d-flex text-black align-items-center">
                   <div className="flex-shrink-0">
                     {image && image?.length > 0 ? (
+                      <Link to={image}>
                       <img
                         src={image}
                         alt="Generic placeholder image"
                         className="img-fluid"
                         style={{ width: "180px", borderRadius: "10px" }}
-                      />
+                      /></Link>
                     ) : (
                       <img
                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"

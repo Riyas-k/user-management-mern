@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { AppBar, Button, Toolbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import jwt from "jwt-decode";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 function Header(props) {

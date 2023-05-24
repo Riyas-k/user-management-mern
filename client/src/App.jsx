@@ -7,6 +7,7 @@ import Profile from "./components/user/Profile";
 import Register from "./components/user/Register";
 import { Routes, Route } from "react-router-dom";
 import PrivateComponent, { AdminPrivate } from "./components/PrivateComponent";
+import AddUser from "./components/admin/AddUser";
 
 function App() {
  
@@ -25,6 +26,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<AdminPrivate/>} >
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/add-user" element={<AddUser/>}  />
         </Route>
       </Routes>
     </>
